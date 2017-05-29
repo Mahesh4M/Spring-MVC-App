@@ -1,12 +1,14 @@
 package com.me.model.entites;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
-import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+@XmlRootElement(name="project")
 public class Project
 {
 	private Long projectId;
@@ -27,6 +29,8 @@ public class Project
 	private boolean special;
 
 	private String type;
+
+	private Date date;
 	
 	private List<String> pointOfContact;
 
@@ -109,12 +113,23 @@ public class Project
 	public void setType(String type) {
 		this.type = type;
 	}
+	
+	public void setDate(Date date)
+	{
+		this.date = date;
+	}
+	
+	public Date getDate()
+	{
+		return date;
+	}
 
 	@Override
 	public String toString() {
 		return "Project [projectId=" + projectId + ", name=" + name + ", description=" + description + ", sponsor="
 				+ sponsor + ", authorizedHours=" + authorizedHours + ", authorizedFunds=" + authorizedFunds + ", year="
-				+ year + ", special=" + special + ", type=" + type + ", pointOfContact=" + pointOfContact + "]";
+				+ year + ", special=" + special + ", type=" + type + ", date=" + date + ", pointOfContact="
+				+ pointOfContact + "]";
 	}
 
 

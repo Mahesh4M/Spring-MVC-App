@@ -6,10 +6,13 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,12 +20,17 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.me.model.entites.Resource;
+import com.me.model.services.ResourceService;
 
 @Controller
 @RequestMapping("/resource")
 @SessionAttributes("resource")
 public class ResourcesControler
 {
+	@Autowired
+	private ResourceService resourceService;
+	
+	
 	//from nav bar
 	@RequestMapping(value=("/add"), method=RequestMethod.GET)
 	public String add(Model model)
@@ -39,19 +47,13 @@ public class ResourcesControler
 			
 		model.addAttribute("resource", new Resource());*/
 		
-		if(1==1)
+	/*	if(1==1)
 		{
 				throw new RuntimeException();	
 		}
+	*/	
 		return "resource_add";
 	}
-	
-	@ExceptionHandler(NullPointerException.class)
-	public String handleError(HttpServletRequest request)
-	{
-		return "controller_error";
-	}
-	
 	
 	@RequestMapping("/request")
 	@ResponseBody
@@ -96,8 +98,22 @@ public class ResourcesControler
 	@RequestMapping("/save")
 	public String save(@ModelAttribute("resource") Resource resource, SessionStatus status)
 	{
-		System.out.println(resource);
 		status.setComplete();
 		return "redirect:/resource/add";
 	}
+	
+	@RequestMapping("/find")
+	public String findResources(Model model)
+	{
+		model.addAttribute("resources", this.resourceService.findAll());
+		
+		return "resources";
+	}
+	
+	@RequestMapping(value={"/{resourceId}"}, produces=MediaType.APPLICATION_ATOM_XML_VALUE)
+	public @ResponseBody Resource findResource(@PathVariable("resourceId") Resource resource, Model model )
+	{
+		return resource;
+	}
+	
 }

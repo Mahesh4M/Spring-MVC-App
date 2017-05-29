@@ -3,20 +3,105 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
-
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+ 
 	
-	<context:component-scan base-package="com.me.*"></context:component-scan>
-	<mvc:annotation-driven/>
+	<context:component-scan base-package="com.me.*"/>
+	<mvc:annotation-driven conversion-service="conversion-service"/>
 	
-	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-	
-		<property name="prefix" value="/WEB-INF/views/"></property>
-		<property name="suffix" value=".jsp"></property>
+	<bean id="conversion-service" class="org.springframework.context.support.ConversionServiceFactoryBean">
+		<property name="converters">
+			<list>
+				<bean class="com.me.converters.JulianDateConverter"/>
+				<bean class="com.me.converters.ResourceConvertor" />
+			</list>	
+		</property>
 	</bean>
 	
-	<mvc:resources location="/resources/" mapping="/resources/**"></mvc:resources>
+	
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/project/**"/>
+			<bean class="com.me.interceptors.GlobalInterceptor" />		
+		</mvc:interceptor>		
+	</mvc:interceptors>
+	
+	
+	<bean class="com.me.mvc.HitCounter" scope="session">
+		<aop:scoped-proxy/>
+	</bean>
+	
+	
+			<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+					<property name="prefix" value="/WEB-INF/views/"></property>
+					<property name="suffix" value=".jsp"></property>
+				</bean>
+		  
+				<bean class="org.springframework.web.servlet.view.XmlViewResolver">
+					<property name="location" value="/WEB-INF/spring/views.xml"></property>
+					<property name="order" value="1"></property>
+				</bean>
+		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+ 	<!-- 
+	we are doing this functinallity using @ResponseBody annotation to send json and xml data to client.
+	following contentNegotiationd....resolver is kind of expensive. simple way is to us responseBody annotation	
+ -->
+
+	<!-- <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+		<property name="viewResolvers">
+			<list>
+				<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+					<property name="prefix" value="/WEB-INF/views/"></property>
+					<property name="suffix" value=".jsp"></property>
+				</bean>
+		  
+				<bean class="org.springframework.web.servlet.view.XmlViewResolver">
+					<property name="location" value="/WEB-INF/spring/views.xml"></property>
+					<property name="order" value="1"></property>
+				</bean>
+			</list> 
+		</property>
+		<property name="contentNegotiationManager">
+				<bean class="org.springframework.web.accept.ContentNegotiationManager">
+					<constructor-arg>
+						<bean class="org.springframework.web.accept.PathExtensionContentNegotiationStrategy">
+							<constructor-arg>
+								<map>
+									<entry key="json"  value="application/json"/>
+									<entry key="xml" value="application/xml"/>
+								</map>
+							</constructor-arg>
+						</bean>
+					</constructor-arg>
+				</bean>
+		</property>
+		<property name="defaultViews">
+				<list>
+					<bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"/>
+				</list>
+		</property>
+	</bean>
+	 -->
+ 	
+	
+	
+	
+	<mvc:resources location="/resources/" mapping="/resources/**"/>
 	
 </beans>

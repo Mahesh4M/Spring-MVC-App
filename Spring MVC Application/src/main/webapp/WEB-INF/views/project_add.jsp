@@ -68,6 +68,13 @@
 				</div>
 			
 				<div class="form-group">
+					<label for="date">Start Date(Jullian)</label>
+					<form:input id="date" 
+						class="form-control" path="date"/>
+				</div>
+			
+			
+				<div class="form-group">
 					<label for="project-name">Description</label>
 					<form:textarea path="description" class="form-control" rows="3"></form:textarea>
 					<form:errors path="description" />

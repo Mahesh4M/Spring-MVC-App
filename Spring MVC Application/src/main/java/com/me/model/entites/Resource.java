@@ -3,6 +3,9 @@ package com.me.model.entites;
 import java.math.BigDecimal;
 import java.util.Arrays;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name="file")
 public class Resource
 {
 	private Long resourceId;
@@ -13,6 +16,26 @@ public class Resource
 	private String[] indicators;
 	private String notes;
 	
+	
+	public Resource() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	
+	
+	public Resource(Long resourceId, String name, String type, BigDecimal cost, String unitOfMesure) {
+		super();
+		this.resourceId = resourceId;
+		this.name = name;
+		this.type = type;
+		this.cost = cost;
+		this.unitOfMesure = unitOfMesure;
+	}
+
+
+
+
+
 	public String[] getIndicators() {
 		return indicators;
 	}
