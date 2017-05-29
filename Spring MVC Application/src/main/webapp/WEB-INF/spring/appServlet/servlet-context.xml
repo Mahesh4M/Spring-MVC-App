@@ -22,7 +22,7 @@
 		</property>
 	</bean>
 	
-	
+	 
 	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/project/**"/>
@@ -46,7 +46,7 @@
 					<property name="order" value="1"></property>
 				</bean>
 		
-	
+	<bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver"/>
 	
 	
 	

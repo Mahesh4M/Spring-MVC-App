@@ -1,23 +1,26 @@
 package com.me.controllers;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.me.model.entites.Resource;
 import com.me.model.services.ResourceService;
@@ -116,4 +119,22 @@ public class ResourcesControler
 		return resource;
 	}
 	
+	@RequestMapping(value="/upload", method=RequestMethod.POST, produces=MediaType.IMAGE_GIF_VALUE)
+	public @ResponseBody byte[] uploadFile(@RequestParam("file") MultipartFile file) throws IOException
+	{
+	
+		byte[] b = file.getBytes();
+		 return 	      b;      
+		
+		/*if(!file.isEmpty())
+		{
+			//return "file size is "+file.getSize();
+	
+		}
+		else
+		{
+			//return "There was a problem";
+		}
+	*/	
+	}
 }
